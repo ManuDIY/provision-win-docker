@@ -1,0 +1,81 @@
+{
+  "variables": {
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "region": "{{env `REGION`}}",
+    "instance_type": ""
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "communicator": "winrm",
+    "winrm_username": "Administrator",
+    "winrm_use_ssl": true,
+    "winrm_insecure": true,
+    "user_data_file":"./scripts/ec2-userdata.ps1",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "{{user `region`}}",
+    "source_ami_filter": {
+      "filters": {
+      "virtualization-type": "hvm",
+      "name": "Windows_Server-2016-English-Full-Base-*",
+      "root-device-type": "ebs"
+      },
+      "most_recent": true
+    },
+    "ami_description": "Windows node with Docker installed.",
+    "instance_type": "{{user `instance_type`}}",
+    "ssh_username": "Administrator",
+    "ami_name": "packer-win-docker-{{timestamp}}",
+    "tags": {
+    "OS_Version": "Windows_Server-2016",
+    "Release": "Latest"
+    }
+  }],
+  "provisioners": [
+    {
+      "type": "powershell",
+      "inline": [
+        "invoke-webrequest -UseBasicparsing -Outfile docker.zip https://download.docker.com/components/engine/windows-server/17.06/docker-17.06.1-ee-1.zip",
+        "Expand-Archive docker.zip -DestinationPath $Env:ProgramFiles",
+        "Remove-Item -Force docker.zip",
+        "$null = Install-WindowsFeature containers"
+      ]
+    },
+    {
+    "type": "windows-restart"
+    },
+    {
+      "type": "powershell",
+      "inline": [
+        "$env:path += \";$env:ProgramFiles\\docker\"",
+        "$newPath = \"$env:ProgramFiles\\docker;\" + [Environment]::GetEnvironmentVariable(\"PATH\",[EnvironmentVariableTarget]::Machine)",
+        "[Environment]::SetEnvironmentVariable(\"PATH\", $newPath,[EnvironmentVariableTarget]::Machine)",
+        "dockerd --register-service",
+        "Start-Service docker",
+        "docker version"
+      ]
+    },
+    {
+      "type": "powershell",
+      "inline": [
+        "Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))",
+        "choco install -y git"
+      ]
+    },
+    {
+      "type": "powershell",
+      "inline": [
+        "git --version"
+      ]
+    },
+    {
+      "type": "powershell",
+      "inline": [
+        "cd C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts",
+        "./InitializeInstance.ps1 -Schedule"
+      ]
+    }
+],
+  "description": "This template creates an AWS AMI for Windows Server 2016 with Docker and Git installed."
+}
