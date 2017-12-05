@@ -17,7 +17,13 @@ resource "aws_instance" "docker_machines" {
 
    provisioner "remote-exec" {
      inline = [
-         "net user Administrator ${var.admin_password}"
+         "net user Administrator ${var.admin_password}",
+         "docker pull microsoft/nanoserver",
+         "docker pull microsoft/windowsservercore",
+         "docker pull microsoft/mssql-server-windows-developer",
+         "docker pull microsoft/dotnet-framework-samples",
+         "docker pull microsoft/dotnet-framework-build",
+         "docker pull microsoft/iis",
               ]
       connection {
         type     = "winrm"
