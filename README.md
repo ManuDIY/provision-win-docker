@@ -1,4 +1,4 @@
-# Instructions
+# Instructions on your machine (requires Packer and Terraform)
 
 Set your AWS keys:
 
@@ -15,12 +15,19 @@ You can generate the AWS AMI and store it in your AWS account by running the fol
 Now you can run terraform to provision VMs:
 
 > default region is eu-central-1, you can override it with -var region=<<another_region>>
+> the admin_password below should comply with Windows Server 2016 password policy
 
       cd terraform
-      terraform apply -var admin_password=<<some password>> -var instance_count=<<number of VMs>>
+      terraform init
+      terraform apply -var admin_password=<<some password>> -var instance_count=<<number of VMs>> -var volume_size=<<the volume size in GB - default is 50GB >>
 
 Destroy the resources created by terraform:
 
       terraform destroy
 
 > running terraform may end with an error, but usually creates the VMs.
+
+# Instructions using docker
+
+      $ cd terraform
+      $ docker run -i -t -v $(pwd):/tmp  hashicorp/terraform:light init /tmp; terraform apply  -var admin_password=MyWindowsServer2016ValidPassword! -var instance_count=1 -var volume_size=60
