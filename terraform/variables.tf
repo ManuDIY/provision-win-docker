@@ -23,3 +23,8 @@ variable "admin_password" {
 variable "instance_type" {
   default = "t2.micro"
 }
+
+# defining volume_size in GB
+variable "volume_size" {
+  default = 50
+}

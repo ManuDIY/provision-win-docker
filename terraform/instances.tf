@@ -7,9 +7,9 @@ resource "aws_instance" "docker_machines" {
   associate_public_ip_address = true
   subnet_id                   = "${aws_subnet.main.id}"
   user_data                   = "${file("scripts/ec2-userdata.ps1")}"
-  # root_block_device           = {
-  #                                  volume_size = 65
-  #                               }
+  root_block_device           = {
+                                   volume_size = "${var.volume_size}"
+                                }
   tags                        = {
                                    Name  = "Terraform-Win-Docker"
                                 }
