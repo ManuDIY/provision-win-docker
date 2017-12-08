@@ -29,6 +29,7 @@ resource "aws_instance" "docker_machines" {
         type     = "winrm"
         user     = "Administrator"
         password = "thisIsJustTemporary!"
+        timeout  = "10m" 
       }
     }
 
