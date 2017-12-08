@@ -11,7 +11,8 @@ resource "aws_instance" "docker_machines" {
                                    volume_size = "${var.volume_size}"
                                 }
   tags                        = {
-                                   Name  = "Terraform-Win-Docker"
+                                   Name  = "Terraform-Win-Docker",
+                                   status = "Prod"
                                 }
   depends_on                  = ["aws_internet_gateway.gw"]
 
@@ -29,7 +30,7 @@ resource "aws_instance" "docker_machines" {
         type     = "winrm"
         user     = "Administrator"
         password = "thisIsJustTemporary!"
-        timeout  = "10m" 
+        timeout  = "10m"
       }
     }
 
