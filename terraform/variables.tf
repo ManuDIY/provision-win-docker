@@ -21,7 +21,7 @@ variable "admin_password" {
 
 # defining instance type
 variable "instance_type" {
-  default = "t2.micro"
+  default = "t2.medium"
 }
 
 # defining volume_size in GB
