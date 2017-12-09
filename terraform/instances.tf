@@ -20,6 +20,7 @@ resource "aws_instance" "docker_machines" {
      inline = [
          "net user Administrator ${var.admin_password}",
          "docker pull microsoft/nanoserver",
+         "docker pull azuresdk/azure-powershell",
          "docker pull microsoft/windowsservercore",
          "docker pull microsoft/mssql-server-windows-developer",
          "docker pull microsoft/dotnet-framework-samples",
