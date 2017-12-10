@@ -31,3 +31,7 @@ Destroy the resources created by terraform:
 
       $ cd terraform
       $ docker run -i -t -v $(pwd):/tmp  hashicorp/terraform:light init /tmp; terraform apply  -var admin_password=MyWindowsServer2016ValidPassword! -var instance_count=1 -var volume_size=60
+
+# Get the list of public IP addressses
+
+    jq -r '.modules[0].resources | .[] | select(.type=="aws_instance") | .primary.attributes.public_ip' terraform.tfstate | nl
