@@ -4,13 +4,16 @@ Set your AWS keys:
 
       export AWS_ACCESS_KEY_ID=<<access_key>>
       export AWS_SECRET_ACCESS_KEY=<<secret_key>>
+      export REGION=<<region>>
+
+> to see a list of avaliable regions, look at the following link: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions
 
 You can generate the AWS AMI and store it in your AWS account by running the following command:
 
 > default region is eu-central-1, you can override it with -var region=<<another_region>>
 
       cd packer
-      packer build packer-win-ami.json -var instance_type=t2.small
+      packer build -var instance_type=t2.small packer-win-ami.json 
 
 Now you can run terraform to provision VMs:
 
