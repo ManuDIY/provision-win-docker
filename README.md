@@ -13,7 +13,7 @@ You can generate the AWS AMI and store it in your AWS account by running the fol
 > default region is eu-central-1, you can override it with -var region=<<another_region>>
 
       cd packer
-      packer build -var instance_type=t2.small packer-win-ami.json 
+      packer build -var instance_type=t2.small packer-win-ami.json
 
 Now you can run terraform to provision VMs:
 
@@ -30,9 +30,6 @@ Destroy the resources created by terraform:
 
 > running terraform may end with an error, but usually creates the VMs.
 
-# Getting the list of Public IP addresses
-
-`grep public_ip\" terraform.tfstate | sed 's/\"//g' | sed 's/public_ip://g' | sed 's/,//g' | tr -d ' ' | nl`
 # Instructions using docker
 
       $ cd terraform
