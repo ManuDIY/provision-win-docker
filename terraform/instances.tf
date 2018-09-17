@@ -23,7 +23,8 @@ resource "aws_instance" "docker_machines" {
          "docker pull azuresdk/azure-powershell",
          "docker pull microsoft/windowsservercore",
          "docker pull microsoft/mssql-server-windows-developer",
-         "docker pull microsoft/dotnet-framework-samples",
+         "docker pull microsoft/dotnet-framework-samples:4.7.1",
+         "docker pull microsoft/dotnet-framework:4.7.1"
          "docker pull microsoft/dotnet-framework-build",
          "docker pull microsoft/iis",
               ]
