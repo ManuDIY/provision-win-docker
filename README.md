@@ -30,6 +30,9 @@ Destroy the resources created by terraform:
 
 > running terraform may end with an error, but usually creates the VMs.
 
+# Getting the list of Public IP addresses
+
+`grep public_ip\" terraform.tfstate | sed 's/\"//g' | sed 's/public_ip://g' | sed 's/,//g' | tr -d ' ' | nl`
 # Instructions using docker
 
       $ cd terraform
